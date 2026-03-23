@@ -436,7 +436,7 @@ class ParallelProcessor {
     /** Strip characters not valid in XML tag names */
     static String sanitizeTag(String name) {
         return name.replaceAll('[^a-zA-Z0-9_\\-.]', '_')
-                   .replaceWith(~/^([0-9])/, '_$1')
+                   .replaceAll('^([0-9])', '_$1')
     }
 
     // ═══════════════════════════════════════════════════════════════════════
@@ -496,4 +496,8 @@ class ParallelProcessor {
     }
 }
 
-ParallelProcessor.main(args)
+// Standalone execution only — SAP CPI does not use main(args)
+// Entry point in SAP CPI is: def Message processData(Message message)
+if (binding.hasVariable('args')) {
+    ParallelProcessor.main(args as String[])
+}
